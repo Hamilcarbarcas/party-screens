@@ -1,0 +1,164 @@
+{
+  "PARTYSCREENS": {
+    "Preset": {
+      "table": "Table",
+      "wall": "Wall"
+    },
+    "Menu": {
+      "MakeTable": "Make Table Screen",
+      "MakeWall": "Make Wall Screen",
+      "Strip": "Remove Screen's Actor Ownership",
+      "Remove": "Stop Being a Party Screen"
+    },
+    "Marker": "Party screen: {label}",
+    "Strip": {
+      "Title": "Remove Screen Ownership",
+      "Body": "{user} owns these actors. A party screen sees every player-owned token without owning any, so its ownership can go. Observer still lets their sheets open on the screen.",
+      "Observer": "Set to Observer",
+      "Remove": "Remove",
+      "Done": "Updated {count} actors for {user}."
+    },
+    "Camera": {
+      "Mode": {
+        "physical": "Physical scale",
+        "fit": "Fit scene",
+        "initial": "Initial view",
+        "mirror": "Mirror GM view",
+        "party": "Follow party",
+        "combat": "Follow combat",
+        "selection": "Follow GM selection",
+        "tokens": "Follow tokens"
+      },
+      "FollowScale": {
+        "fit": "Zoom to fit",
+        "pan-only": "Pan only, physical scale"
+      },
+      "Fit": {
+        "inside": "Whole scene",
+        "outside": "Fill screen",
+        "horizontal": "Fit width",
+        "vertical": "Fit height"
+      }
+    },
+    "Panel": {
+      "Title": "Party Screens",
+      "Open": "Open Panel",
+      "Online": "Online",
+      "Offline": "Offline",
+      "ThisScene": "This scene",
+      "Default": "Default camera",
+      "UseDefault": "Default ({mode})",
+      "FollowScale": "Follow scale",
+      "Fit": "Scene fit",
+      "Tokens": "Followed tokens",
+      "TokensCount": "{count} on this scene",
+      "UseSelected": "Follow Selected",
+      "NoSelection": "Select some tokens first.",
+      "SendView": "Send My View",
+      "Reset": "Reset View",
+      "Calibrate": "Calibrate",
+      "ViewBoxes": "Show view boxes",
+      "NoReport": "Not reporting.",
+      "Status": "{scene} · {mode} · zoom {scale} · {ppi}",
+      "Calibrated": "{ppi} px per inch",
+      "Uncalibrated": "not calibrated",
+      "General": "General",
+      "Screen": "Screen",
+      "Label": "Label",
+      "Preset": "Preset",
+      "PresetHint": "Changing it resets this screen's settings.",
+      "Account": "Account",
+      "Strip": "Remove Ownership ({count})",
+      "RemoveDisplay": "Stop Being a Screen",
+      "RemoveConfirm": "{label} goes back to being an ordinary player account, and its screen settings are lost.",
+      "Camera": "Camera",
+      "Focus": "Focus",
+      "FocusTokens": "Focused tokens",
+      "FocusSelected": "Focus Selected",
+      "Ui": "Screen UI",
+      "ChatLog": "Chat log",
+      "CombatShown": "Turns shown after the current one",
+      "AddDisplay": "Add a Screen",
+      "Add": "Add",
+      "NoCandidates": "Every player account is already a screen.",
+      "Content": "Shared Images and Journals",
+      "ClearImages": "Clear Images",
+      "ClearJournals": "Clear Journals"
+    },
+    "Calibrate": {
+      "Square": "Measure the width of this square, edge to edge ({px} px).",
+      "Prompt": "A square is now showing on {label}. Measure its width with a ruler, edge to edge.",
+      "Measured": "Measured width (in)",
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "Invalid": "Enter the measured width in inches."
+    },
+    "Settings": {
+      "InchesPerGridSquare": {
+        "Name": "Inches per grid square",
+        "Hint": "Size of one grid square at physical scale."
+      },
+      "PxPerInch": {
+        "Name": "Screen pixels per inch",
+        "Hint": "Set by calibration on the screen's own machine. 0: not calibrated."
+      },
+      "FollowPadding": {
+        "Name": "Follow padding",
+        "Hint": "Grid squares of margin around followed tokens."
+      },
+      "PanDuration": {
+        "Name": "Pan duration",
+        "Hint": "Milliseconds per screen camera move. 0: instant."
+      },
+      "HideUi": {
+        "Name": "Hide screen UI",
+        "Hint": "Off: screens show the full interface, for troubleshooting."
+      },
+      "ImageCloseAfter": {
+        "Name": "Close shared images after",
+        "Hint": "Seconds, on screens. 0: never."
+      },
+      "JournalCloseAfter": {
+        "Name": "Close shared journals after",
+        "Hint": "Seconds, on screens. 0: never."
+      },
+      "CloseOnGmClose": {
+        "Name": "Close on screens when the GM closes",
+        "Hint": "Closing a shared image or journal closes it on screens too."
+      }
+    },
+    "Focus": {
+      "Mode": {
+        "off": "Whole party",
+        "combat": "Current combatant",
+        "selection": "GM selection",
+        "tokens": "Listed tokens"
+      }
+    },
+    "Ui": {
+      "ChatLog": {
+        "off": "Hidden",
+        "collapsed": "New messages only",
+        "expanded": "Full log"
+      },
+      "sceneNavigation": "Scene navigation",
+      "tokenBar": "Token bar",
+      "combatPopout": "Combat tracker",
+      "cameraViews": "Camera views",
+      "notifications": "Notifications",
+      "content": "Shared images and journals"
+    },
+    "Keys": {
+      "ToggleUi": {
+        "Name": "Show or hide screen UI",
+        "Hint": "On a screen only, until reload."
+      },
+      "ClearImages": {
+        "Name": "Clear images from screens"
+      },
+      "ClearJournals": {
+        "Name": "Clear journals from screens"
+      }
+    }
+  }
+}

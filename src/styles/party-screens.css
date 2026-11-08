@@ -1,0 +1,185 @@
+#players li.player .party-screens-marker {
+  flex: 0 0 16px;
+  width: 16px;
+  text-align: center;
+  font-size: var(--font-size-12);
+  opacity: 0.8;
+}
+
+.party-screens-strip ul {
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 0.25rem 0 0.5rem;
+}
+
+/* §6.4 calibration square, on the display */
+#party-screens-calibration {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+#party-screens-calibration .party-screens-calibration-label {
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 18px;
+}
+
+#party-screens-calibration .party-screens-calibration-square {
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  outline: 2px solid #000;
+  outline-offset: -4px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* §8.1 display UI. The allowlist is adapted from Monk's Common Display (GPL-3.0),
+   css/monks-common-display.css, for v13's layout. Third-party ids are Monk's. */
+body.party-screens-ui > :not(#interface, #board, #hud, #pause, #notifications, #camera-views, #tooltip,
+  #combat-popout, #astora-token-bar, .image-popout, .journal-sheet, #party-screens-calibration,
+  #dice-box-canvas, #confetti-canvas, #narrator, #slideshow-display, #slideshow-canvas, #combat-carousel,
+  #levels3d, #combat-dock, #conversation-hud-background, .story-sheet, #boss-bar, #epic-roll-5e,
+  .bossOverlay, .illandril-grid-labels--grid--container, .illandril-grid-labels--ruler--container,
+  #theatre-group),
+body.party-screens-ui #ui-left-column-1 > :not(#smalltime-app),
+body.party-screens-ui #ui-left-column-2 > :not(#scene-navigation),
+body.party-screens-ui:not(.ps-show-sceneNavigation) #scene-navigation,
+body.party-screens-ui #ui-middle > :not(#ui-top, #ui-bottom, #ui-conversation-hud),
+body.party-screens-ui #ui-top > :not(#loading, #combat-dock, .bossBar, .bossBarSpacer),
+body.party-screens-ui #ui-bottom > :not(#camera-views),
+body.party-screens-ui #ui-right > :not(#sidebar, #ui-right-column-1),
+body.party-screens-ui #ui-right-column-1 > :not(#chat-notifications),
+body.party-screens-ui #chat-notifications > :not(.overflow),
+body.party-screens-ui #sidebar > :not(#sidebar-content),
+body.party-screens-ui #sidebar-content > :not(#chat),
+body.party-screens-ui #chat > :not(.chat-scroll),
+body.party-screens-ui.ps-chat-off #ui-right,
+body.party-screens-ui.ps-chat-collapsed #sidebar,
+body.party-screens-ui:not(.ps-show-cameraViews) #camera-views,
+body.party-screens-ui:not(.ps-show-notifications) #notifications,
+body.party-screens-ui:not(.ps-show-tokenBar) #astora-token-bar,
+body.party-screens-ui:not(.ps-show-combatPopout) #combat-popout,
+body.party-screens-ui.ps-no-content .image-popout,
+body.party-screens-ui.ps-no-content .journal-sheet {
+  display: none !important;
+}
+
+/* §8.2 combat popout: round in the title, then portraits and names of the rows combat.mjs marks.
+   Adapted from Monk's Common Display (GPL-3.0). */
+body.party-screens-ui #combat-popout {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+body.party-screens-ui #combat-popout .window-header > :not(.window-title),
+body.party-screens-ui #combat-popout .window-content > :not(.combat-tracker),
+body.party-screens-ui #combat-popout .window-resize-handle,
+body.party-screens-ui #combat-popout li.combatant:not(.ps-shown),
+body.party-screens-ui #combat-popout li.combatant > :not(.token-image, .token-name),
+body.party-screens-ui #combat-popout li.combatant .token-name > :not(.name) {
+  display: none !important;
+}
+
+body.party-screens-ui #combat-popout .window-header .window-title {
+  text-align: center;
+}
+
+body.party-screens-ui #combat-popout .window-content {
+  overflow: hidden !important;
+}
+
+body.party-screens-ui #combat-popout ol.combat-tracker {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* §10 panel. An auto-height window isn't clamped to the viewport, so cap it here. */
+#party-screens-panel {
+  max-height: 90vh;
+}
+
+#party-screens-panel .window-content {
+  overflow-y: auto;
+}
+
+#party-screens-panel .ps-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#party-screens-panel .ps-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+#party-screens-panel .ps-tabs .ps-tab {
+  flex: 1;
+  opacity: 0.7;
+}
+
+#party-screens-panel .ps-tabs .ps-tab.active {
+  opacity: 1;
+  font-weight: bold;
+  border-color: var(--color-border-highlight, #ff6400);
+}
+
+#party-screens-panel .form-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#party-screens-panel .form-header .ps-state {
+  margin-left: auto;
+  font-size: var(--font-size-12);
+  font-weight: normal;
+}
+
+#party-screens-panel .form-header .ps-online {
+  color: var(--color-level-success, #4caf50);
+}
+
+#party-screens-panel .form-header .ps-offline {
+  opacity: 0.6;
+}
+
+#party-screens-panel .form-fields .ps-value {
+  flex: 1;
+}
+
+#party-screens-panel .ps-buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+#party-screens-panel .ps-buttons button {
+  flex: 1;
+}
+
+#party-screens-panel .ps-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0.25rem 0;
+}
+
+#party-screens-panel .ps-toggles label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+#party-screens-panel .ps-display .ps-calibration {
+  margin-top: 0.4rem;
+}
