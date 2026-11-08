@@ -6,7 +6,7 @@ export const SETTINGS = Object.freeze({
   pxPerInch: "pxPerInch",
   followPadding: "followPadding",
   panDuration: "panDuration",
-  viewBox: "viewBox",
+  alwaysShowFrames: "alwaysShowFrames",
   hideUi: "hideUi",
   imageCloseAfter: "imageCloseAfter",
   journalCloseAfter: "journalCloseAfter",
@@ -25,7 +25,9 @@ export const FOLLOW_SCALES = Object.freeze(["fit", "pan-only"]);
 export const FOCUS_MODES = Object.freeze(["off", "combat", "selection", "tokens"]);
 
 /** §8.1: profile `ui` keys shown as on/off toggles; `chatLog` takes one of CHAT_MODES. */
-export const UI_TOGGLES = Object.freeze(["sceneNavigation", "tokenBar", "combatPopout", "cameraViews", "notifications"]);
+export const UI_TOGGLES = Object.freeze(["sceneNavigation", "tokenBar", "actionTracker", "combatPopout", "cameraViews", "notifications"]);
+/** Toggles for astora-mod windows, shown in the panel only with astora-mod active. */
+export const ASTORA_TOGGLES = Object.freeze(["tokenBar", "actionTracker"]);
 export const CHAT_MODES = Object.freeze(["off", "collapsed", "expanded"]);
 
 /** Uncalibrated displays assume the CSS inch (§6.4). */

@@ -12,6 +12,7 @@ import { registerUi } from "./ui.mjs";
 import { registerCombat } from "./combat.mjs";
 import { registerContent } from "./content.mjs";
 import { registerPanel } from "./panel.mjs";
+import { registerLayer } from "./layer.mjs";
 import { api } from "./api.mjs";
 
 let available = false;
@@ -28,6 +29,7 @@ Hooks.once("init", () => {
   available = true;
   registerPlayers();
   registerPanel();
+  registerLayer();
   game.modules.get(MODULE_ID).api = api;
 });
 

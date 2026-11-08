@@ -73,11 +73,14 @@ function listed(ids) {
   return (ids ?? []).map((id) => canvas.scene.tokens.get(id)).filter(onScene);
 }
 
-/** Center `rect` in the visible area, padded by `padding` px a side; fixed `scale` pans only. */
-function frameRect(rect, area, { scale = null, padding = 0 } = {}) {
+/**
+ * Center `rect` in the visible area, padded by `padding` px a side; fixed `scale` pans only.
+ * `maxScale` caps a fitted zoom (§17.11).
+ */
+function frameRect(rect, area, { scale = null, padding = 0, maxScale = null } = {}) {
   const width = rect.width + (2 * padding);
   const height = rect.height + (2 * padding);
-  scale ??= Math.min(area.width / width, area.height / height);
+  scale ??= Math.min(area.width / width, area.height / height, maxScale ?? Infinity);
   // Shift the pivot so the rect centers in the visible area, not the window (§6.2).
   const shift = (area.left - area.right) / 2;
   return {
@@ -116,6 +119,7 @@ export function targetView(mode, state) {
   const opts = {
     scale: panOnly ? physicalScale() : null,
     padding: (game.settings.get(MODULE_ID, SETTINGS.followPadding) ?? 0) * canvas.dimensions.size,
+    maxScale: (profile.maxZoom > 0) ? profile.maxZoom : null,
   };
   const follow = (docs) => {
     const rect = union(docs?.length ? docs : partyTokens());

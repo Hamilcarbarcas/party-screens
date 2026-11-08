@@ -1,12 +1,13 @@
 /**
- * GM control panel. DESIGN.md §10, §17.5, §17.8.
+ * GM control panel. DESIGN.md §10, §17.5, §17.8, §17.11.
  *
  * One tab per display (screen, camera, focus, screen UI) and a General tab (adding screens, world
  * settings, shared content).
  */
 
 import {
-  CAMERA_MODES, CHAT_MODES, FIT_MODES, FOCUS_MODES, FOLLOW_SCALES, HOOK_CHANGED, MODULE_ID, SETTINGS, UI_TOGGLES,
+  ASTORA_TOGGLES, CAMERA_MODES, CHAT_MODES, FIT_MODES, FOCUS_MODES, FOLLOW_SCALES, HOOK_CHANGED, MODULE_ID, SETTINGS,
+  UI_TOGGLES,
 } from "./const.mjs";
 import {
   PRESETS, displayUsers, isDisplayUser, profile, sceneOverride, setDisplay, setPreset, setSceneOverride, updateProfile,
@@ -56,7 +57,8 @@ export class PartyScreensPanel extends ApplicationV2 {
     window: { title: "PARTYSCREENS.Panel.Title", resizable: true, icon: "fa-solid fa-presentation-screen" },
     position: { width: 480, height: "auto" },
     actions: {
-      tab: PartyScreensPanel.#onTab,
+      // Not "tab": ApplicationV2 reserves that action for its own tab groups.
+      selectTab: PartyScreensPanel.#onTab,
       addDisplay: PartyScreensPanel.#onAddDisplay,
       removeDisplay: PartyScreensPanel.#onRemoveDisplay,
       stripOwnership: PartyScreensPanel.#onStripOwnership,
@@ -199,7 +201,7 @@ export class PartyScreensPanel extends ApplicationV2 {
 
   #tabButton(tab, icon, label) {
     const active = tab === this.tab ? "active" : "";
-    return `<button type="button" class="ps-tab ${active}" data-action="tab" data-tab="${esc(tab)}"><i class="fa-solid ${icon}"></i> ${esc(label)}</button>`;
+    return `<button type="button" class="ps-tab ${active}" data-action="selectTab" data-tab="${esc(tab)}"><i class="fa-solid ${icon}"></i> ${esc(label)}</button>`;
   }
 
   #displayHtml(user) {
@@ -250,6 +252,7 @@ export class PartyScreensPanel extends ApplicationV2 {
       ${field(t("Panel.Default"), `<select name="camera">${options(CAMERA_MODES, p.camera, "Camera.Mode")}</select>`)}
       ${field(t("Panel.FollowScale"), `<select name="followScale">${options(FOLLOW_SCALES, p.followScale, "Camera.FollowScale")}</select>`)}
       ${field(t("Panel.Fit"), `<select name="fit">${options(FIT_MODES, p.fit, "Camera.Fit")}</select>`)}
+      ${field(t("Panel.MaxZoom"), `<input type="number" name="maxZoom" min="0" step="0.05" value="${esc(p.maxZoom ?? 0)}">`, t("Panel.MaxZoomHint"))}
       ${field(t("Panel.Tokens"), `<span class="ps-value">${esc(t("Panel.TokensCount", { count: tokens }))}</span>
         ${button("followSelected", "fa-crosshairs", t("Panel.UseSelected"))}`)}
       <p class="ps-status notes">${esc(this.#statusText(user))}</p>
@@ -274,8 +277,9 @@ export class PartyScreensPanel extends ApplicationV2 {
   }
 
   #uiHtml(p) {
-    // The token bar row only means something with astora's bar installed.
-    const toggles = UI_TOGGLES.filter((key) => (key !== "tokenBar") || game.modules.get("astora-mod")?.active);
+    // The token bar and action tracker rows only mean something with astora-mod installed.
+    const astora = !!game.modules.get("astora-mod")?.active;
+    const toggles = UI_TOGGLES.filter((key) => astora || !ASTORA_TOGGLES.includes(key));
     return `${header("fa-display", t("Panel.Ui"))}
       ${field(t("Panel.ChatLog"), `<select name="chatLog">${options(CHAT_MODES, p.ui.chatLog, "Ui.ChatLog")}</select>`)}
       <div class="ps-toggles">
@@ -301,7 +305,7 @@ export class PartyScreensPanel extends ApplicationV2 {
       ${add}
       ${header("fa-video", t("Panel.Camera"))}
       ${field(t("Settings.InchesPerGridSquare.Name"), `<input type="number" name="inchesPerGridSquare" min="0.1" step="0.1" value="${esc(setting("inchesPerGridSquare"))}">`)}
-      ${field(t("Panel.ViewBoxes"), checkbox("viewBox", setting("viewBox")))}
+      ${field(t("Panel.AlwaysShowFrames"), checkbox("alwaysShowFrames", setting("alwaysShowFrames")))}
       ${header("fa-display", t("Panel.Ui"))}
       ${field(t("Settings.HideUi.Name"), checkbox("hideUi", setting("hideUi")))}
       ${header("fa-images", t("Panel.Content"))}
@@ -342,6 +346,11 @@ export class PartyScreensPanel extends ApplicationV2 {
       case "sceneFocus": return setSceneOverride(canvas.scene, userId, { focus: input.value || null });
       case "chatLog": return updateProfile(userId, { "ui.chatLog": input.value });
       case "content": return updateProfile(userId, { content: input.checked });
+      case "maxZoom": {
+        const value = Number(input.value);
+        if (value >= 0) await updateProfile(userId, { maxZoom: value });
+        return;
+      }
       case "combatShown": {
         const value = Math.trunc(Number(input.value));
         if (value >= 0) await updateProfile(userId, { combatShown: value });
@@ -363,7 +372,7 @@ export class PartyScreensPanel extends ApplicationV2 {
         if (value >= 0) await game.settings.set(MODULE_ID, SETTINGS[input.name], value);
         return;
       }
-      case "viewBox":
+      case "alwaysShowFrames":
       case "hideUi":
       case "closeOnGmClose": return game.settings.set(MODULE_ID, SETTINGS[input.name], input.checked);
     }
@@ -422,15 +431,5 @@ export function registerPanel() {
     restricted: true,
   });
 
-  Hooks.on("getSceneControlButtons", (controls) => {
-    if (!game.user.isGM || !controls.tokens?.tools) return;
-    controls.tokens.tools.partyScreens = {
-      name: "partyScreens",
-      title: "PARTYSCREENS.Panel.Title",
-      icon: "fa-solid fa-presentation-screen",
-      button: true,
-      order: 96,
-      onChange: () => PartyScreensPanel.open(),
-    };
-  });
+  // The scene-control button lives in the Party Screens group (layer.mjs).
 }

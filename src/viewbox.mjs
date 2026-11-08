@@ -1,18 +1,22 @@
 /**
- * View boxes on GM clients: one outline per connected display, dragged by its edge to move that
- * display. DESIGN.md §6.5, §17.5.
+ * Screen frames (view boxes) on GM clients: one outline per connected display, dragged to move
+ * that display, with the wheel zooming it mid-drag. DESIGN.md §6.5, §17.5, §17.11.
  */
 
-import { HOOK_CHANGED, MODULE_ID, SETTINGS } from "./const.mjs";
+import { FOLLOW_MODES, HOOK_CHANGED, MODULE_ID, SETTINGS } from "./const.mjs";
 import { isDisplayUser, profile } from "./displays.mjs";
-import { centerDisplay } from "./commands.mjs";
+import { centerDisplay, zoomDisplay } from "./commands.mjs";
 import { emit, onMessage } from "./socket.mjs";
+import { framesLayerActive } from "./layer.mjs";
 
 const { PreciseText } = foundry.canvas.containers;
 
 /** Grab band either side of the outline, in screen px. */
 const BAND_PX = 10;
 const LINE_PX = 3;
+/** Zoom step per wheel notch, and the display's zoom range (camera.mjs ZOOM). */
+const WHEEL_STEP = 1.1;
+const ZOOM_RANGE = Object.freeze({ min: 0.05, max: 8 });
 
 /** userId → the display's last report. Read by the panel. */
 export const reports = new Map();
@@ -27,8 +31,15 @@ export function onReport(callback) {
   return () => listeners.delete(callback);
 }
 
+// Shown in the Party Screens control group, and elsewhere only when always shown (§17.11).
 function enabled() {
-  return game.user.isGM && game.settings.get(MODULE_ID, SETTINGS.viewBox);
+  return game.user.isGM && (framesLayerActive() || !!game.settings.get(MODULE_ID, SETTINGS.alwaysShowFrames));
+}
+
+/** Physical scale, and pan-only follow modes, keep their zoom (§17.11). */
+function zoomable(user, mode) {
+  if (mode === "physical") return false;
+  return !(FOLLOW_MODES.includes(mode) && (profile(user)?.followScale === "pan-only"));
 }
 
 function ensureContainer() {
@@ -67,10 +78,13 @@ function paint(box, user, r) {
     .drawRect(x + band, y + band, lw, lh)
     .endFill();
 
-  // The edge band and the label are grabbable; the inside stays clickable for the GM (§17.5).
+  // The edge band and the label are grabbable; the inside stays clickable for the GM (§17.5),
+  // except in the Party Screens control group, where tokens take no clicks anyway (§17.11).
+  const whole = framesLayerActive();
   box.hitArea = {
     contains: (px, py) => {
       const outer = (px >= x - band) && (px <= x + w + band) && (py >= y - band) && (py <= y + h + band);
+      if (whole) return outer;
       const inner = (px > x + band) && (px < x + w - band) && (py > y + band) && (py < y + h - band);
       const onLabel = (px >= x + band) && (px <= x + band + lw) && (py >= y + band) && (py <= y + band + lh);
       return (outer && !inner) || onLabel;
@@ -97,7 +111,7 @@ export function drawBoxes() {
       const user = game.users.get(userId);
       if (!user?.active || !isDisplayUser(user) || (r.sceneId !== canvas.scene.id)) continue;
       shown.add(userId);
-      const at = (drag?.userId === userId) ? { ...r, x: drag.x, y: drag.y } : r;
+      const at = (drag?.userId === userId) ? { ...r, x: drag.x, y: drag.y, scale: drag.scale } : r;
       paint(boxes.get(userId) ?? makeBox(userId), user, at);
     }
   }
@@ -114,33 +128,50 @@ function startDrag(event, userId, box) {
   // Keep the canvas from starting a selection rectangle under the box.
   event.stopPropagation();
   const p = event.getLocalPosition(container);
-  drag = { userId, dx: r.x - p.x, dy: r.y - p.y, x: r.x, y: r.y, timer: null };
+  const canZoom = zoomable(game.users.get(userId), r.mode);
+  drag = { userId, dx: r.x - p.x, dy: r.y - p.y, x: r.x, y: r.y, scale: r.scale, zoomed: false, timer: null };
 
   const sendNow = () => {
     drag.timer = null;
-    centerDisplay(userId, drag.x, drag.y, { instant: true });
+    if (drag.zoomed) zoomDisplay(userId, drag.x, drag.y, drag.scale);
+    else centerDisplay(userId, drag.x, drag.y, { instant: true });
+  };
+  const schedule = () => {
+    drawBoxes();
+    drag.timer ??= setTimeout(sendNow, 100);
   };
   const move = (e) => {
     const q = e.getLocalPosition(container);
     drag.x = q.x + drag.dx;
     drag.y = q.y + drag.dy;
-    drawBoxes();
-    drag.timer ??= setTimeout(sendNow, 100);
+    schedule();
+  };
+  // Capture phase on window, ahead of core's own wheel listener there, so the GM's view stays put.
+  const wheel = (e) => {
+    if (!canZoom || !e.deltaY) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const step = e.deltaY < 0 ? WHEEL_STEP : (1 / WHEEL_STEP);
+    drag.scale = Math.clamp(drag.scale * step, ZOOM_RANGE.min, ZOOM_RANGE.max);
+    drag.zoomed = true;
+    schedule();
   };
   const end = () => {
     box.off("globalpointermove", move);
     box.off("pointerup", end);
     box.off("pointerupoutside", end);
+    window.removeEventListener("wheel", wheel, { capture: true });
     clearTimeout(drag.timer);
     sendNow();
     // Hold the box where it was dropped until the display's next report.
-    Object.assign(r, { x: drag.x, y: drag.y });
+    Object.assign(r, { x: drag.x, y: drag.y, scale: drag.scale });
     drag = null;
     drawBoxes();
   };
   box.on("globalpointermove", move);
   box.on("pointerup", end);
   box.on("pointerupoutside", end);
+  window.addEventListener("wheel", wheel, { capture: true, passive: false });
 }
 
 export function registerViewBox() {

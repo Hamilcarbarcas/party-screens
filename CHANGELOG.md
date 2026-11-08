@@ -17,7 +17,9 @@ matching each release tag.
 - Screen camera: physical scale, fit scene, initial view, mirror GM, follow party, combat, GM
   selection or chosen tokens. Panning, zooming and other moves by anything else are blocked on
   screens. Replaces Lock View and Monk's Common Display's screen mode.
-- View boxes: each screen's view shows on the GM's canvas and moves when dragged by its edge.
+- Screen frames: each screen's view shows on the GM's canvas in the new **Party Screens** scene
+  controls, or everywhere with Always Show Screen Frames. Drag one to move that screen; turn the
+  wheel while dragging to zoom it (not at physical scale or in pan-only follow modes).
 - A GM's pull-ping centers screens too.
 - Calibration for physical scale: measure a square on the screen and enter its width.
 - Focus: narrow a screen's vision to the current combatant, the GM's selection, or listed tokens,
@@ -29,10 +31,12 @@ matching each release tag.
   turn and the next few.
 - Shared images and journals on screens: on or off per screen, close after a delay, close when the
   GM closes, and clear buttons and keys.
-- **Party Screens** panel (token controls, or module settings), one tab per screen: label, preset,
+- **Party Screens** panel (Party Screens controls, or module settings), one tab per screen: label, preset,
   ownership removal, camera mode per scene and default, follow scale, scene fit, followed tokens,
   Send My View, Reset View, Calibrate, focus, and screen UI. A General tab adds screens and holds
   the world settings.
+- Maximum follow zoom per screen (default 1), so follow modes don't zoom in too far.
+- astora-mod's action tracker as a screen UI option, listing player-owned characters only.
 - API at `game.modules.get("party-screens").api` and the `partyScreensChanged` hook.
 
 Earlier releases: see the [GitHub Releases page](https://github.com/Hamilcarbarcas/party-screens/releases).

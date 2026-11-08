@@ -11,18 +11,21 @@ import { refreshVision } from "./vision.mjs";
 /**
  * §3.2. Stored entries hold `preset`, `label` and any overrides; the preset fills the rest.
  * `combatShown` counts the turns after the current one (§8.2); `chatLog` is one of CHAT_MODES.
+ * `maxZoom` caps the follow modes' zoom, 0 for none (§17.11).
  */
 export const PRESETS = Object.freeze({
   table: Object.freeze({
     camera: "physical",
     followScale: "pan-only",
     fit: "inside",
+    maxZoom: 1,
     focus: "off",
     moveFocus: true,
     ui: Object.freeze({
       sceneNavigation: false,
       chatLog: "off",
       tokenBar: false,
+      actionTracker: false,
       combatPopout: false,
       cameraViews: false,
       notifications: false,
@@ -34,12 +37,14 @@ export const PRESETS = Object.freeze({
     camera: "party",
     followScale: "fit",
     fit: "inside",
+    maxZoom: 1,
     focus: "off",
     moveFocus: false,
     ui: Object.freeze({
       sceneNavigation: false,
       chatLog: "expanded",
       tokenBar: true,
+      actionTracker: false,
       combatPopout: true,
       cameraViews: false,
       notifications: false,

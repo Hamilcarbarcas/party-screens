@@ -57,7 +57,6 @@
       "SendView": "Send My View",
       "Reset": "Reset View",
       "Calibrate": "Calibrate",
-      "ViewBoxes": "Show view boxes",
       "NoReport": "Not reporting.",
       "Status": "{scene} · {mode} · zoom {scale} · {ppi}",
       "Calibrated": "{ppi} px per inch",
@@ -83,7 +82,10 @@
       "NoCandidates": "Every player account is already a screen.",
       "Content": "Shared Images and Journals",
       "ClearImages": "Clear Images",
-      "ClearJournals": "Clear Journals"
+      "ClearJournals": "Clear Journals",
+      "AlwaysShowFrames": "Always show screen frames",
+      "MaxZoom": "Maximum follow zoom",
+      "MaxZoomHint": "Follow modes zoom in no further. 0: no limit."
     },
     "Calibrate": {
       "Square": "Measure the width of this square, edge to edge ({px} px).",
@@ -143,6 +145,7 @@
       },
       "sceneNavigation": "Scene navigation",
       "tokenBar": "Token bar",
+      "actionTracker": "Action tracker",
       "combatPopout": "Combat tracker",
       "cameraViews": "Camera views",
       "notifications": "Notifications",
@@ -159,6 +162,11 @@
       "ClearJournals": {
         "Name": "Clear journals from screens"
       }
+    },
+    "Controls": {
+      "Title": "Party Screens",
+      "Frames": "Move Screens",
+      "AlwaysShow": "Always Show Screen Frames"
     }
   }
 }

@@ -176,7 +176,10 @@ function schedule() {
   scheduleTimer = setTimeout(() => apply(), 150);
 }
 
-/** A GM command: `center` keeps the display's scale, `view` sets it too, except in physical mode. */
+/**
+ * A GM command: `center` keeps the display's scale, `view` and `zoom` set it too, except in
+ * physical mode. Follow modes keep either only until their next re-frame (§17.10).
+ */
 function command({ x, y, scale }, duration) {
   const physical = cameraMode() === "physical";
   manual = { sceneId: canvas.scene.id, x, y, scale: physical ? physicalScale() : (scale ?? canvas.stage.scale.x) };
@@ -198,6 +201,7 @@ function onCamera(message) {
   switch (message.command) {
     case "view": return command({ x: message.x, y: message.y, scale: message.scale }, duration);
     case "center": return command({ x: message.x, y: message.y }, duration);
+    case "zoom": return command({ x: message.x, y: message.y, scale: message.scale }, duration);
     case "reset":
       manual = null;
       if (cameraMode() === "physical") savePhysical(null);

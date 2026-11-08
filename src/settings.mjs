@@ -5,6 +5,7 @@
 import { MODULE_ID, SETTINGS } from "./const.mjs";
 import { onScaleSettingChange } from "./camera.mjs";
 import { drawBoxes } from "./viewbox.mjs";
+import { syncAlwaysShowTool } from "./layer.mjs";
 import { applyUi, toggleUiLocally } from "./ui.mjs";
 import { clearContent } from "./content.mjs";
 
@@ -47,12 +48,16 @@ export function registerSettings() {
     default: 600,
   });
 
-  game.settings.register(MODULE_ID, SETTINGS.viewBox, {
+  // §17.11: frames show in the Party Screens control group; this shows them everywhere.
+  game.settings.register(MODULE_ID, SETTINGS.alwaysShowFrames, {
     scope: "client",
     config: false,
     type: Boolean,
-    default: true,
-    onChange: () => drawBoxes(),
+    default: false,
+    onChange: (value) => {
+      syncAlwaysShowTool(value);
+      drawBoxes();
+    },
   });
 
   game.settings.register(MODULE_ID, SETTINGS.hideUi, {

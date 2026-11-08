@@ -24,6 +24,12 @@ export function centerDisplay(userId, x, y, { instant = false } = {}) {
   send(userId, "center", { sceneId: canvas.scene.id, x, y, instant });
 }
 
+/** Center and zoom at once, from a frame drag with the wheel (§17.11). Not for physical mode. */
+export function zoomDisplay(userId, x, y, scale) {
+  if (!canvas?.ready) return;
+  send(userId, "zoom", { sceneId: canvas.scene.id, x, y, scale, instant: true });
+}
+
 /** Back to what the mode asks for, dropping any commanded view. */
 export function resetView(userId) {
   send(userId, "reset");

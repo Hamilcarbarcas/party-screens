@@ -44,7 +44,7 @@
 /* §8.1 display UI. The allowlist is adapted from Monk's Common Display (GPL-3.0),
    css/monks-common-display.css, for v13's layout. Third-party ids are Monk's. */
 body.party-screens-ui > :not(#interface, #board, #hud, #pause, #notifications, #camera-views, #tooltip,
-  #combat-popout, #astora-token-bar, .image-popout, .journal-sheet, #party-screens-calibration,
+  #combat-popout, #astora-token-bar, #astora-action-tracker, .image-popout, .journal-sheet, #party-screens-calibration,
   #dice-box-canvas, #confetti-canvas, #narrator, #slideshow-display, #slideshow-canvas, #combat-carousel,
   #levels3d, #combat-dock, #conversation-hud-background, .story-sheet, #boss-bar, #epic-roll-5e,
   .bossOverlay, .illandril-grid-labels--grid--container, .illandril-grid-labels--ruler--container,
@@ -66,6 +66,7 @@ body.party-screens-ui.ps-chat-collapsed #sidebar,
 body.party-screens-ui:not(.ps-show-cameraViews) #camera-views,
 body.party-screens-ui:not(.ps-show-notifications) #notifications,
 body.party-screens-ui:not(.ps-show-tokenBar) #astora-token-bar,
+body.party-screens-ui:not(.ps-show-actionTracker) #astora-action-tracker,
 body.party-screens-ui:not(.ps-show-combatPopout) #combat-popout,
 body.party-screens-ui.ps-no-content .image-popout,
 body.party-screens-ui.ps-no-content .journal-sheet {

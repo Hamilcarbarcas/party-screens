@@ -137,14 +137,22 @@ the mode you pick, and you move it from the GM's side.
 The follow modes re-frame once tokens stop moving, not on every step, and fall back to the party
 when there's nothing to follow (no combat, nothing selected). **Follow scale** decides whether they
 zoom to fit or only pan at physical scale. Pan-only is the one to use on a table with minis on it.
+**Maximum follow zoom** stops them zooming in further than a set zoom (1 by default; the panel's
+status line shows a screen's current zoom).
 
 If the chat log is open on a wall screen, framing leaves room for it.
 
 ### Moving a screen
 
-- **View boxes:** each connected screen shows as a labeled outline on the GM's canvas, on the same
-  scene. Drag it by its edge or its label to move that screen. Clicking inside the outline still
-  reaches your tokens.
+- **Screen frames:** pick the **Party Screens** controls (<i class="fa-solid fa-presentation-screen"></i>
+  in the scene controls, beside token and measurement controls) and each connected screen on the
+  scene shows as a labeled frame. Drag a frame to move that screen. Turn the mouse wheel while
+  dragging to zoom it, except at physical scale or in a pan-only follow mode. In a follow mode,
+  the zoom lasts until the screen next re-frames, as a drag does; to keep it from zooming in too
+  far, set **Maximum follow zoom**.
+- **Always Show Screen Frames** (a toggle in the Party Screens controls) shows the frames in the
+  other controls too. There, only a frame's edge and label grab, so clicks inside it still reach
+  your tokens.
 - **Pull-ping:** a GM's pull-ping (Shift while pinging) centers every screen on that spot, at the
   screen's own zoom, as well as moving the players.
 - **Send My View** in the panel: the screen jumps to where you're looking. A physical-scale screen
@@ -174,7 +182,8 @@ input, or windows anyone opens on it. What it can show, per screen:
 
 - **Chat log:** hidden, new messages only (they appear for a moment and fade), or the full log.
 - **Scene navigation**, **camera views**, **notifications**.
-- **Token bar**, if astora-mod's token bar is in use.
+- **Token bar** and **action tracker**, if astora-mod is in use. The action tracker opens with
+  combat and lists only player-owned characters.
 - **Combat tracker** and **shared images and journals** (below).
 
 Dice animations and a few other modules' overlays always show.
@@ -207,15 +216,16 @@ so nothing covers the table.
 
 ## The Party Screens panel
 
-GM only. Open it from the **Party Screens** button in the token controls, or from the module's
-settings. Each screen has its own tab:
+GM only. Open it from the <i class="fa-solid fa-sliders"></i> button in the Party Screens
+controls, or from the module's settings. Each screen has its own tab, and there's no limit on how
+many screens you add:
 
 - **Screen:** its label, its preset, the account, **Remove Ownership** (while it still owns
   actors) and **Stop Being a Screen**.
 - **Camera:**
   - **This scene:** the camera mode for the current scene, or the screen's default.
   - **Default camera:** the mode on every scene without its own.
-  - **Follow scale** and **Scene fit:** see [camera modes](#camera-modes).
+  - **Follow scale**, **Scene fit** and **Maximum follow zoom:** see [camera modes](#camera-modes).
   - **Followed tokens / Follow Selected:** follow the tokens you have selected, on this scene.
   - **Send My View**, **Reset View**, **Calibrate**. The line above them shows what the screen is
     doing right now.
@@ -223,8 +233,9 @@ settings. Each screen has its own tab:
   have selected, on this scene. See [focus](#focus).
 - **Screen UI:** see [screen UI](#screen-ui).
 
-The **General** tab adds screens, and holds inches per grid square, the view box toggle, **Hide
-screen UI**, and the [shared content](#shared-images-and-journals) settings and buttons.
+The **General** tab adds screens, and holds inches per grid square, **Always show screen
+frames**, **Hide screen UI**, and the [shared content](#shared-images-and-journals) settings and
+buttons.
 
 ## Settings
 
